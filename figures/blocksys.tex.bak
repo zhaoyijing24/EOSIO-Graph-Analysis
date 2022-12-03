@@ -1,0 +1,378 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{color}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\begin{document}
+%
+\title{Exploring EOSIO via Graph characteristics\thanks{Supported by organization x.}}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{First Author\inst{1}\orcidID{0000-1111-2222-3333} \and
+Second Author\inst{2,3}\orcidID{1111-2222-3333-4444} \and
+Third Author\inst{3}\orcidID{2222--3333-4444-5555}}
+%
+\authorrunning{F. Author et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{Princeton University, Princeton NJ 08544, USA \and
+Springer Heidelberg, Tiergartenstr. 17, 69121 Heidelberg, Germany
+\email{lncs@springer.com}\\
+\url{http://www.springer.com/gp/computer-science/lncs} \and
+ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
+\email{\{abc,lncs\}@uni-heidelberg.de}}
+%
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+The abstract should briefly summarize the contents of the paper in
+150--250 words.
+
+\keywords{First keyword  \and Second keyword \and Another keyword.}
+\end{abstract}
+
+% \section{example}
+%\paragraph{Sample Heading (Fourth Level)}
+%The contribution should contain no more than four levels of
+%headings. Table~\ref{tab1} gives a summary of all heading levels.
+%
+%\begin{table}
+%\caption{Table captions should be placed above the
+%tables.}\label{tab1}
+%\begin{tabular}{|l|l|l|}
+%\hline
+%Heading level &  Example & Font size and style\\
+%\hline
+%Title (centered) &  {\Large\bfseries Lecture Notes} & 14 point, bold\\
+%1st-level heading &  {\large\bfseries 1 Introduction} & 12 point, bold\\
+%2nd-level heading & {\bfseries 2.1 Printing Area} & 10 point, bold\\
+%3rd-level heading & {\bfseries Run-in Heading in Bold.} Text follows & 10 point, bold\\
+%4th-level heading & {\itshape Lowest Level Heading.} Text follows & 10 point, italic\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+%\begin{figure}
+%\includegraphics[width=\textwidth]{fig1.eps}
+%\caption{A figure caption is always placed below the illustration.
+%Please note that short captions are centered, while long ones are
+%justified by the macro package automatically.} \label{fig1}
+%\end{figure}
+
+%\begin{theorem}
+%\end{theorem}
+%
+% the environments 'definition', 'lemma', 'proposition', 'corollary',
+% 'remark', and 'example' are defined in the LLNCS documentclass as well.
+%
+
+\section{Introduction}
+Recent years, blockchain technology has become a buzzword and aroused a great deal of interests among researchers, developers and investors. Among the blockchain systems, Ethereum is the largest one that supports smart contracts. However, it suffers from high transaction-con?rmation latency and low throughput problems since the employ of Proof-of-Work (PoW) consensus protocol. Based on Delegated Proof-of-Stake (DPoS) consensus, a new platform EOSIO provides a solution for these problems. Built for commercial Decentralized Applications (DApps), EOSIO has some outstanding features like free for usage, high throughput and eco-friendly, which has attracted much attention. Especially, the number of transactions in EOSIO has reached more than four billion within two years, which witnesses the prosperity of EOSIO.
+
+% 这里写EOS现有的研究
+There are some studies about the performance [], security [] [], transaction data analysis [] [] of EOSIO. Xu et al. [] present a  thorough analysis on EOSIO from the perspectives of architectural, performance, and economics. Lee et al. [] conducted the first study to analyze the security and possible attacks of EOSIO. Huang et al. [] characterize the activities in EOSIO and develop techniques for detecting bots and fraudulent activity based on their insights. Zheng et al. [] provide an overview of up-to-date on-chain data of EOSIO. However, existing studies investigating the EOSIO ecosystem from a graph analysis perspective are limited. And more in-depth analyses are needed to discover the user behaviors and understand EOSIO.
+
+% EOS: An Architectural, Performance, and Economic Analysis
+% Who Spent My EOS? On the (In)Security of Resource Management of EOS.IO (安全)
+% Security Analysis of EOSIO Smart Contracts (安全)
+% Characterizing EOSIO Blockchain
+% XBlock-EOS: Extracting and Exploring Blockchain Data From EOSIO
+% We Know What They've Been Put Through: Revisiting High-scalability Blockchain Transactions %% 交易模式识别
+% Evulhunter: Detecting fake transfer vulnerabilities for eosio’s smart contracts at webassembly-level
+
+In this paper, we leverage graph analysis to explore the characteristics of the early EOSIO by investigating four kinds of user activities, namely namely account creation, account vote, money transfer and contract authorization. Firstly, according to these four kinds of activities in the first 15 million blocks, we construct account creation graph (ACG), money transfer graph (MTG), account vote graph (AVG) and contract authorization graph (CAG) as weighted directed graphs. Secondly, we conduct an analysis on these graph by measuring some graph metrics such as degree distribution, clustering coefficient, connected component, etc. And based on the investigation results, we discover some interesting insights about the EOSIO ecosystem, which would help people understand the user activities in the early EOSIO.
+
+\subsection{Related Work}
+
+Graph analysis assists people to understand the relationship between objects in complex systems. In 2012, Reid and Harrigan [] first modeled the Bitcoin transaction data with graph representations. By combined some external information, they investigate a theft case of Bitcoin with flow analysis.
+% An Analysis of Anonymity in the Bitcoin System
+Up to now, many researchers have conducted graph analysis on blockchain transaction data. Existing work on blockchain transaction graph analysis can be divided into describing the graph properties via some metrics, and conducting data mining tasks on graph-structure data. The former can give us insights into the blockchain systems and how their transaction graphs form and develop, while the latter mainly investigates some data mining tasks such as de-anonymizing the accounts [] [], detecting illicit activities [] [], etc. And our work focuses on the former one.
+
+There are many studies on characterizing the blockchain transaction graph with graph metrics. For example, Lischke and Fabian [] examined the Bitcoin transaction graph and economy during the first four years, and this analysis revealed the business distribution as well as transaction distribution across countries, and investigated the small world phenomenon in some subgraphs.
+% Analyzing the Bitcoin Network: The First Four Years
+Chen et al. [] analyzed three major activities (money transfer, account creation and contract invocation) in Ethereum via graph analysis, and they discovered some new observations which help people have a full understanding of Ethereum.
+% Understanding Ethereum via Graph analysis
+Motamed and Bahrak [] investigated the graph properties of five kinds of cryptocurrencies and compared the evolution of these properties between different cryptocurrencies.
+% Quantitative analysis of?cryptocurrencies?transaction?graph
+Since EOSIO is a newly emerging blockchain system, studies on graph properties analysis related to EOSIO are few. Huang et al. [] analyzed the money transfers, account creation and contract invocation activity of EOSIO, and further developed techniques to detect bots and fraudulent activity. However, our study are focused on characterizing four main activities (namely, account creation, account vote, money transfer and contract authorization) in the early EOSIO with graph property analysis, and we provide a deeper insight into the graph properties.
+% Characterizing EOSIO Blockchain
+
+\subsection{Contributions}
+In summary, we investigate the four major behaviors in EOSIO by conducting a graph analysis. Our major contributions are listed as follows:\textcolor{red}{
+\begin{enumerate}
+    \item[(1)] To the best of our knowledge, our work is the first systematic research on early EOSIO via analyzing four major activities, namely account creation, account vote, money transfer and contract authorization.
+	\item[(2)] To simplify the analysis of EOSIO system, we construct four graphs for the four major activities, and obtain some interesting insights via graph analysis.
+	\item[(3)] We observe some attack activities in EOSIO, which could damage the resources of EOSIO, such as CPU, storage and bandwidth.
+\end{enumerate}}
+
+
+The remaining sections are organized as follows. We introduce some background knowledge of EOSIO in Section \ref{Background}. Then, We detailed the procedure of data collection in Section \ref{DataCollection}. Next, we conduct graph construction and graph analysis in Section \ref{GraphAnalysis}, where we list some analysis results. And finally, we conclude this paper in Section \ref{Conclusion}.
+
+\section{Background}\label{Background}
+This section introduces some background knowledge of EOSIO related to the following research. More details about the operation of  EOSIO can be found in its white paper [].
+% https://github.com/EOSIO/Documentation/blob/master/TechnicalWhitePaper.md
+
+\textbf{What's EOSIO?} Released in June, 2018, EOSIO is a DPos-based blockchain system designed for building commercial DApps. In DPos, only 21 block producers are in charge of transaction verification and block production. These block producers are chosen by the vote from the token holders in EOSIO, which can guarantee the fairness and choose the most trusted 21 block producers. Compared with traditional blockchain systems, the DPos-based EOSIO has much higher throughput per second (tps) that can generate a block with an average of 0.5 seconds. Like bitcoin in the Bitcoin system and Ether in Ethereum, the most common currency token in EOSIO is named EOS. Besides, EOSIO can also support Turing-complete smart contracts, and it provides a more complete smart contract ecosystem. The complied bytecode of each contract is executed in EOSIO's WebAssembly-based virtual machine (EOSVM). Unlike many blockchain systems that use gas mechanism to solve halting problem [], EOSIO is resource constrained (i.e., limiting the RAM, CPU and bandwidth). The resources can be obtained by token mortgage in EOSIO, and it is almost free for users because the resource supply from many DApps.
+% A. M. Turing, “On computable numbers, with an application to the entscheidungsproblem,” Proceedings of the London mathematical society, vol. 2, no. 1, pp. 230–265, 1937
+
+\textbf{Transactions and actions.} In EOSIO, a block can contain multiple transactions and each transaction is made up of one or more actions. An action is an invocation of a contract that represents an operation in the system. There are mainly three types of actions, namely calling action, inline action and deferred action. A calling action represents a contract invocation from a user while an inline action represents an invocation triggered by a contact. And a deferred action is an action being scheduled to execute in a future transaction. Once a calling action or an inline action fails, the transaction would be rolled back, while the failure of a deferred action only affects the scheduled transaction. It's worth mentioned that the detailed information of inline actions does not be package into transactions, which brings challenges in transaction data acquisition.
+
+\textbf{Accounts and permissions.} Different from Ethereum, the identity of an account is a unique string containing up to 12 characters, but not the public key. An account can only be created by an existing account in EOSIO, except the initial account in EOSIO named \textit{eosio}. Each account can deploy only one contract on itself through the \textit{setcode} interface of \textit{eosio}, and can delete this contract by setting the contract code empty with the same interface. The basic actions are completed by interfaces provided from system accounts. For example, new accounts can be created by the \textit{netaccount} interface of \textit{eosio}, and the EOS transfer operation can be executed by the \textit{transfer} interface of \textit{eosio.token}. When invoking a contract, the related accounts should delegate appropriate permissions for the execution, namely assign specific public/private keys and grant privileges to this action. The permissions generally are divided into owner permission and active permission, where the owner permission is the highest level of permission and designed for cold storage, and the active permission can perform all operation except change the owner.
+\section{Data Collection} \label{DataCollection}
+We collect all transaction data of the first 15 million blocks, which includes about 3 months transaction data from the launch of EOSIO on June 6, 2018.
+
+Since the large volume of transaction data, it's infeasible to obtain all transaction data we need by directly crawling them from blockchain explorer. We first utilize Nodeos, an EOSIO client provided by the official EOSIO development team, to synchronize the on-chain data. To speed up this process, we download blocks from some EOSIO backup service provider firstly and then start Nodeos from a certain specified block. Then the transaction information can be obtained through the RPC interface of Nodeos.
+
+However, the details of inline actions do not be recorded in on-chain data. To address this issue, we replay all transactions and utilize the action trace data, which is generated in EOSVM and records the detailed run-time information of actions. By calling the \textit{history\_file\_plugin} interface provided by the EOSIO development team, we obtain the action trace data. Then, we extract the actions of activities including account creation, account vote, money transfer and contract authorization from the raw data. Noting that the contract authorization activity refers to the permission delegating behavior for contracts belonging to common users rather than system users like eosio.token. After the representation simplification of the raw data, we obtain the data that can be directly applied to graph analysis.
+
+The statistic of actions for the four activities is shown in Table \ref{Table:Proportion}. As we can see, most of these activities are accomplished with calling actions. The proportion of calling actions in the actions of account creation and account vote are not surprising, since EOSIO provides interfaces for these activities from system accounts. Especially, we can conclude that the voting behaviors are relatively transparent in the early EOSIO because most of them are accomplished with calling actions whose records are public accessible in blockchain. Though money transfer activity can be conducted by directly calling the interface provided by eosio.token through calling actions, the proportion of inline actions in money transfer activity is relatively high, which means smart contracts are widely used in setting specific transaction rules by users. For contract authorization, it also has a small proportion of inline actions, and this phenomenon is caused by the self\-invocation between contracts.
+
+\begin{table}
+\renewcommand{\arraystretch}{1.2}
+\caption{Statistic of Actions}
+\centering
+\setlength{\tabcolsep}{1.2mm}{
+\begin{tabular}{|c|c|c|}
+    \hline
+    \centering
+    Activity & Calling Action (Proportion) & Inline Action (Proportion) \\
+    \hline
+    Account Creation & 299,178 (99.053\%) & 2,860 (0.947\%) \\
+    \hline
+    Account Vote & 129,800 (99.997\%) & 4 (0.003\%)\\
+    \hline
+    Money Transfer & 4,557,498 (52.857\%) & 4,064,790 (47.143\%)\\
+    \hline
+    Contract Authorization & 329,012,816 (99.241\%) & 2,515,729 (0.759\%) \\
+    \hline
+\end{tabular}}
+\label{Table:Proportion}
+\end{table}
+
+\section{Graph Analysis} \label{GraphAnalysis}
+
+%% 原有的论文没有写出构造活动网络!!! 下面部分，先写定义，再写
+% In this section, we represent the statistics and visualization of MTG, ACG, AVG and CAG, also some well-defined network metrics are applied to measure the properties of them. Therefore, we understand their mechanism and obtain some interesting insights as follows:
+
+ Insight 1: There is a great uncertainty when users vote in early EOSIO. One possible reason is that in the early time many users are experiencers and testers.
+
+ Insight 2: False prosperity on EOSIO is common. We can see only half of accounts participate in transfers and just less than 10\% engage in voting.
+
+ Insight 3: EOSIO has some attackers. One possible reason is that they may be used to test EOSIO, but they fill the space and cause useless data.
+
+\begin{figure}[htbp]
+\caption{Graphs Visualization}
+\centering
+    \subfigure[ACG]{%
+    \label{fig:ACGVisualization}
+    \includegraphics[scale=0.05, trim = 100 0 100 0]{figures/user_visual.jpg}
+    }
+    \subfigure[AVG]{%
+    \label{fig:AVGVisualization}
+    \includegraphics[scale=0.06, trim = 100 0 100 0]{figures/vote_visual.jpg}
+    }
+    \subfigure[MTG]{%
+    \label{fig:MTGVisualization}
+    \includegraphics[scale=0.065, trim = 100 0 100 0]{figures/tx_visual.jpg}
+    }
+    \subfigure[CAG]{%
+    \label{fig:CAGVisualization}
+    \includegraphics[scale=0.05, trim = 100 0 100 0]{figures/con_visual.jpg}
+    }
+    %
+\centering
+\label{fig:Visualization}
+\end{figure}
+
+\begin{table}
+\centering
+\caption{Statistic of Graphs}
+\begin{tabular}{|c|c|c|}
+     \hline
+     \centering
+     Graph & edges & nodes \\
+     \hline
+     ACG & 302,038 & 302,039 \\
+     \hline
+     AVG & 439,154 & 28,769 \\
+     \hline
+     MTG & 1,370,813 & 204,841 \\
+     \hline
+     CAG & 126,918 & 35,479 \\
+     \hline
+\end{tabular}
+\label{Table:Statistic}
+\end{table}
+
+\subsection{Accounts creation}
+\begin{figure}[htbp]
+\centering
+    \subfigure[ degree]{%
+    \includegraphics[scale=0.3]{figures/user_degree.eps}
+    }
+    \subfigure[ outdegree]{%
+    \includegraphics[scale=0.3]{figures/user_outdegree.eps}
+    }
+    %
+\centering
+\caption{ Degree/Indegree/Outdegree distributins of ACG}
+\label{fig:ACGdegree}
+\end{figure}
+
+\begin{table}
+ \caption{table:Metrics of Graphs}
+ \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+     \hline
+     \centering
+     Graph & Cluster & Assortativity & SCC & largest  SCC & WCC & largest WCC & largest diameter &  smallest diameter \\
+     \hline
+     ACG & 0 & / & 302,039 & 1 & 1 & 302,039 & 20 & 20 \\
+     \hline
+     AVG & 0.066 & -0.221 & 28,750 & 1 & 3 & 28,766 & 6 & 1 \\
+     \hline
+     MTG & 0.259 & -0.338 & 149,536 & 1 & 1 & 204,841 & 6 &  6 \\
+     \hline
+     CAG & 0.086 & -0.16 & 35,462 & 1 & 223 & 35,086 & 10 & 0\\
+     \hline
+\end{tabular}
+\label{table:Metrics of Graphs}
+\end{table}
+New accounts can be created by old ones during account creation activities. To model this fact, we define ACG as follows:
+
+$G=\{E,V\},\;\ E=\{v_i,v_j\},\;\ v_i,v_j\in V$,
+
+where $V$ is a set of nodes, which represents accounts. $E$ is a set of edges, in which each pair of them represents the creation relationship.
+
+The definition of ACG implies several properties. First of all, if $(v_i,v_j)\in E$, $k\ne i$, then $(v_k,v_j)\notin E$. Because one account only can be created by one father account, there is only one directed edge between two accounts. Secondly,  if $(v_i,v_j)\in E$,  then $(v_j,v_i)\notin E$. It implies that creating two accounts by each other is impossible.
+
+
+We visualize ACG, as Figure. \ref{fig:ACGVisualization} shows. In this figure, we apply Union-Find algorithm to randomly select 8000 nodes and its pioneer nodes to guarantee every node to have a path to its ancestor node. There are several amazing observations. The whole graph is a tree-like graph, and every node has a directed path to eosio. In addition, most of them have one degree, namely they do not have child nodes. This may be because accounts are created by official accounts firstly, and then these created accounts can create others. So the root node of ACG is the official account eosio, while other accounts are directly or indirectly connecting with it in an unidirectional path. Therefore, we can see that the largest subgraph is the graph itself. Moreover, as Table \ref{Table:Statistic} shows, the number of edges is the same as that of actions, meaning one account cannot be created twice. In addition, the phenomenon that node number is one less than edge number also indicates the tree-like structure of ACG.
+
+The outdegree and degree distributions of ACG satisfy power law distribution and have a long trailing, which are shown in Fig. \ref{fig:ACGdegree}. These distributions indicate that a few accounts have a large degree, creating many accounts. Besides, since the eosio have no indegree, and others have one for they only can be created once, the indegree of ACG is either 0 or 1, so we do not analyze the indegree of ACG.
+
+We compute graph metrics of ACG and present them in Table. \ref{table:Metrics of Graphs}, such as the values of clustering  coefficient, assortativity coefficient, number of SCC/WCC, size (how many nodes) of largest SCC/WCC and largest/smallest diameter. The clustering coefficient is 0, since any accounts created by the same accounts cannot create each other. The largest diameter 20 is equal to the smallest one, indicating that the height of the tree-like graph is 20 and the only subgraph in ACG is the graph itself.
+
+The largest SCC has one node, since every node can only be created once. The largest WCC have 302039 nodes, equal to all of nodes the whole ACG have, meaning that ACG is a WCC, because two accounts cannot be created each other, as well as the whole graph is a tree with the root of eosio.
+
+
+\subsection{AVG Analysis}
+\begin{figure}[htbp]
+\centering
+    \subfigure[ degree]{%
+    \includegraphics[scale=0.3]{figures/vote_degree.eps}
+    }
+    \subfigure[ indegree]{%
+    \includegraphics[scale=0.3]{figures/vote_indegree.eps}
+    }
+    \subfigure[ outdegree]{%
+    \includegraphics[scale=0.3]{figures/vote_outdegree.eps}
+    }
+    %
+\centering
+\caption{ Degree/Indegree/Outdegree distributins of AVG}
+\label{fig:AVGdegree}
+\end{figure}
+Accounts can vote for others so that we can construct a graph to handle vote relationship among accounts. The definition is as follows:
+
+$G=\{E,V,w\},\;\ E=\{v_i,v_j\},\;\ v_i,v_j\ \in\ V$,
+
+where $V$ is a set of nodes, indicating accounts. $E$ is a set of edges, containing many ordered pairs of nodes, and each of them indicates a voter and a producer. $w$ refers to the total amounts of vote between certain pairs of nodes.
+
+To visualize AVG, we randomly select 10000 edges. As we can see in Fig. \ref{fig:ACGVisualization}, most nodes in AVG have one degree. There are few accounts explicitly orientated to vote for others. The possible reason is that in the early period after the launch of mainnet, many voters were aimed to test EOSIO, or only wanted to experience voting, so the votes from them were greatly uncertain. Moreover, every account can vote for others, yet a few influential accounts can be voted by others. Thus, the graph is star-like, with many hub nodes who are respected producers. The statistics of AVG (Table. \ref{Table:Statistic}) demonstrate that there is a large gap between the number of actions and that of edges, suggesting that some voters often vote for one producers repeatedly. One possible conjecture is that those votes are used as part of a straw vote. But this is arguably not true because of the internal fairness of EOSIO. But it is more likely because some producers are very capable so that other accounts acknowledge it and are willing to vote for it. In addition, the total nodes who participate in voting only account for 9.5\% of all the accounts on EOSIO, which shows an appearance of false prosperity.
+
+As shown in Fig. \ref{fig:AVGdegree}, the degree/ indegree/ outdegree distributions of AVG do not match power law distribution. We inspect these distributions. Many accounts vote for others only once, and few nodes vote many times. Moreover, the indegree distribution is the same as degree distribution, which suggesting that most accounts are voter, not producer. So in EOSIO, all accounts can be voters, while a few of them can be producers.
+
+Table. \ref{table:Metrics of Graphs} lists the metrics of AVG. The clustering coefficient is 0.066, i.e. the percentage of tuples among accounts existing in AVG is low. Assortativity coefficient is negative, which can be explained that the nodes with many votes tend to vote for those with few votes whose competitiveness is far lower than the former ones. The largest diameter is 6 means that at most 6 accounts vote for others one by one. The small clustering and the small diameter illustrate that AVG is not a small world network.
+
+The largest SCC have one node, revealing that two accounts are unlikely to vote for each other. Surprisingly, the largest WCC have 28,766 nodes, accounting for 93.4\% of AVG, which is large and covers almost the whole graph. The number of SCC is large, so WCC contains many SCCs, which means that only few votes concentrate in the small scales, while most votes are spread around the WCC.
+
+\subsection{Money transfers}
+\begin{figure}[htbp]
+\centering
+    \subfigure[ degree]{%
+    \includegraphics[scale=0.3]{figures/tx_degree.eps}
+    }
+    \subfigure[indegree]{%
+    \includegraphics[scale=0.3]{figures/tx_indegree.eps}
+    }
+    \subfigure[outdegree]{%
+    \includegraphics[scale=0.3]{figures/tx_outdegree.eps}
+    }
+    %
+\centering
+\caption{ Degree/Indegree/Outdegree distributins of MTG}
+\label{fig:MTGGdegree}
+\end{figure}
+We construct a graph that indicates the transfer relationship among accounts. The definition is as follows:
+
+$ G=\{E,V,w\},\;\ E={v_i,v_j},\;\ v_i,v_j\in V$,
+
+where $V$ is a set of nodes, indicating accounts. $E$ is a set of edges, consisting of lots of ordered pairs of nodes, which indicates the direction of money transfer. $w$ refers to the total from a sender to a recipient.
+
+MTG is visualized in Fig. \ref{fig:MTGVisualization}, where we randomly choose 10000 edges. A few large degree nodes (possibly are DApps and exchanges) and many small degree nodes (the individual users) constitute MTG. In particular, the fact that individual users can transfer money with others directly illustrates the free usage of EOSIO, which is unbelievable for former blockchain platform. Table. \ref{Table:Proportion} shows the statistic of MTG. As for the transfer action number is triple of the edges, we can obtain when one node want transfer to another, it will divide the money values into several times. The total accounts are only 67\% of all accounts on EOSIO, which means EOSIO is a platform with an illusion of prosperity.
+
+The degree/ indegree/ outdegree distributions of MTG are shown in Table. \ref{Table:Statistic}, all of which are followed by the power law, meaning that a few large-degree nodes trade many times, while many small-degree nodes only trade once. The fitting line we plot on the figure shows coefficient $\alpha$ of the distribution $y~x^\alpha$. The larger $\alpha$ is, the more quickly the degree distribution varies. We inspect the fitting lines and  that indegree is more variable than degree/outdegree, which means one-degree recipients are far more than one-degree senders. These one-degree nodes probably are EOSIO fans or experiencers.
+
+Table. \ref{Table:Proportion} shows some metrics of MTG. The clustering coefficient is 0.259, which is a moderately large value, indicating that when one account transfer to other two accounts respectively, these two accounts will have a transfer relationship. This tuple structure actually ensures the stable of the whole graph. Assortativity coefficient is negative, revealing an account with many trades prefers to transfer to accounts with few trades, and this matches the observation of visualization that DAPPs and exchanges who domain EOSIO are likely to trade with individuals.
+
+The largest SCC have only one node, illustrating that there is no accounts trading with each other, since the aim of transfer is not to take back the money. Also, EOSIO is inherently a fair ecosystem, because accounts allocate resource (RAM, CPU, and NET) according to the number of tokens they hold, which means if you do not have enough money, you cannot attack others, but if you attack the system holding lots of tokens, it will cause a bad environment for your own trades. Thus, it is not surprising that there is few accounts can disturb the order of EOSIO community by ’scalping’. Moreover, the number of one-node SCCs is 149536, which is much more than the number of WCCs. It suggests that one WCC contains many one-node SCCs. The only WCC in MTG may be because the official account eosio transfer to many other accounts during mainnet launch, while these accounts almost have no transfer to each other. Consequently, the WCC is potentially supported by eosio account.
+
+\subsection{Contracts authorization}
+\begin{figure}[htbp]
+
+\centering
+    \subfigure[ degree]{%
+    \includegraphics[scale=0.3]{figures/contract——degree.eps}
+    }
+    \subfigure[outdegree]{%
+    \includegraphics[scale=0.3]{figures/contract——outdegree.eps}
+    }
+    \subfigure[ indegree]{%
+    \includegraphics[scale=0.3]{figures/contract_indegree.eps}
+    }
+    %
+\centering
+\caption{ Degree/Indegree/Outdegree distributins of CAG}
+\label{fig:CAGdegree}
+\end{figure}
+Contracts can authorize permissions to provide others access to execute actions. We construct CAG to describe this management relationship. The definition is shown as follows:
+
+$G=\{E,V,w\},\;\ E=\{v_i,v_j\},\;\ v_i,v_j \in V$,
+
+where $V$ is a set of nodes, which indicates contracts. $E$ is a set of edges, representing an authority between ordered pair of nodes. $w$ refers to the total times of authorizations between a certain pair of nodes.
+
+To visualize CAG in Fig.\ref{fig:ACGVisualization}, we randomly choose 10000 edges. This indicates the existence of a few contract with large managing authority, and that those contracts defend their authority by managing the permissions of action such as transfer and vote.From the large gap between number of actions and edges (Table.  \ref{Table:Statistic}), we can see that some contracts are authorized many times. We inspect the data and find that in the total 331,530,705 edges, there are 316,579,248 edges authorized to one contracts named 'blocktwitter'. Although these authority have no real meaning, they cause the resource crisis of EOSIO, which impedes money transfer of others. In a word, 'blocktwitter’ is classed as a Denial of Service attack contact.
+
+\ref{fig:CAGdegree} shows the degree/ indegree/ outdegree distributions of CAG. All the distributions meet power law distribution, namely, there are few nodes are authorized for many times, yet most nodes are authorized only once (possibly are DAPPs), which indicates that EOSIO are dominated by some influential DAPPs.
+
+As \ref{table:Metrics of Graphs} shown, clustering coefficient is 0.086, which is not large, suggesting that when one contract authorizes other two contracts, the authority relationship between these two authorized contracts is unlikely to exist. Assortavity coefficient is negative, illustrating that the contracts with many permissions prefer to authorize those with few permissions, which seems to be a positive pyramid management structure. The smallest diameter is 0, meaning that there are contracts authorize themselves the permission to their actions. The largest diameter is 10, which shows that it is a large graph, and that many contracts authorize each other and maintain the operation of EOSIO by deploying various commercial applications.
+
+The largest SCC is a one-node graph, manifesting that if one contract authorizes another one, it will have no authority of the previously authorized one. However, we do not exclude the phenomenon that accounts have its own authority. The largest WCC have 35086 nodes, which accounts for 90\% of CAG. But there are only 2 WCCs with more than 100 nodes, demonstrating that except the largest one, almost all WCCs are small.
+
+
+\section{Conclusion} \label{Conclusion}
+In this paper, we conduct the first systemic work to understand behaviors on EOSIO in four dimensions, which are money transfer, account creation, account vote and contract authority. We collect all raw data and analyze them by constructing for graphs (e.g. MTG, ACG, AVG, CAG). Then from our graph metrics analysis, we obtain some interesting insights, which help people to understand EOSIO deeply in principle.
+%
+% ---- Bibliography ----
+%
+% BibTeX users should specify bibliography style 'splncs04'.
+% References will then be sorted and formatted in the correct style.
+%
+\bibliographystyle{splncs04}
+\bibliography{mybib}
+
+\end{document}
